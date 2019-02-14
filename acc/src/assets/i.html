@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>杨柳</title>
+	
+</head>
+<body>
+	
+	<script type="text/javascript">
+
+	function ajax(opt){
+
+		var defa = {
+			
+			data : null,
+			type : "get",
+			boole : true,
+			succe : null,
+			error : null,
+		}
+
+		var setting = extend(opt,defa);
+	
+
+		 xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+		//判断上传的数据是字符串还是对象啊, 如果是对象,就要转换成字符串.
+		setting.data = typeof setting.data == "String" ? setting.data : fromat(setting.data);
+
+		//发送请求
+		if(setting.type == "get"){
+			xhr.open(setting.type, setting.url, setting.boole);
+			xhr.send(setting.data);
+		}else{
+			xhr.open(setting.type, setting.url, setting.boole);
+			xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+			xhr.send(setting.data);
+		}
+		//回调函数
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				setting.success && setting.success(xhr.responseText)
+			}else{
+				setting.error && setting.error(xhr.status)
+			}
+		};
+
+		console.log(Format(setting.a))
+		
+	}
+	//合并对象
+	function extend(){
+		
+		var newObj = {};
+
+		for(var i = 0; i < arguments.length ; i++){
+
+			for(var k in arguments[i]){
+				newObj[k] = arguments[i][k]
+			}
+
+		}
+		return newObj
+	}
+	
+	//字符串转对象
+
+	function sul(b){
+		arr = [];
+
+		for(var k in b){
+			arr.push(k + "=" + encodeURIComponent(b[k]))
+		}
+
+		return arr.join("&")
+
+
+	}
+	function sul(b){
+
+		var arr = [];
+
+		for(var i in b){
+			arr.push(i + "=" + b[i])
+		}
+		return arr.join("&");
+
+	}
+	var a= {
+		name : "nj",
+		ahg : 26,
+	}
+	console.log(sul(a))
+
+	ajax({
+		url : "ajax.json",
+		a : {
+			name : "yll",
+			age : 56
+		},
+		success  : function(result){
+			new Search({
+				result : eval("("+result+")"),
+				ing : "cnjsid"
+			})
+		}
+
+	})
+
+		
+
+	</script>
+	
+
+</body>
+</html>
